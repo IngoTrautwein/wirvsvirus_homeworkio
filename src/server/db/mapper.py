@@ -8,9 +8,9 @@ class Mapper(AbstractContextManager, ABC):
         self._cnx = None
 
     def __enter__(self):
-        self._cnx = connector.connect(user='demo', password='demo',
+        self._cnx = connector.connect(user='root', password='root',
                               host='127.0.0.1',
-                              database='homework-io')
+                              database='homeworkio')
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
