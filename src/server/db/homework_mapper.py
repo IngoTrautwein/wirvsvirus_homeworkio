@@ -13,30 +13,13 @@ class HomeworkMapper(Mapper):
         cursor.execute("SELECT * from homework")
         tuples = cursor.fetchall()
 
-        for (id, first_name, surname) in tuples:
+        for (id, description, file_path, start_event, end_event) in tuples:
             homework = Homework()
             homework.set_id(id)
-            homework.set_first_name(first_name)
-            homework.set_surname(surname)
-            result.append(homework)
-
-        self._cnx.commit()
-        cursor.close()
-
-        return result
-
-    def find_by_surname(self, name):
-        result = []
-        cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM homework WHERE surname LIKE '{}' ORDER BY surname".format(name)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        for (id, first_name, surname) in tuples:
-            homework = Homework()
-            homework.set_id(id)
-            homework.set_first_name(first_name)
-            homework.set_surname(surname)
+            homework.set_description(description)
+            homework.set_file_path(file_path)
+            homework.set_start_event(start_event)
+            homework.set_end_event(end_event)
             result.append(homework)
 
         self._cnx.commit()
@@ -48,16 +31,18 @@ class HomeworkMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM homework WHERE id={}".format(key)
+        command = "SELECT id, description, file_path, start_event, end_event FROM homework WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, first_name, surname) = tuples[0]
+            (id, description, file_path, start_event, end_event) = tuples[0]
             homework = Homework()
             homework.set_id(id)
-            homework.set_first_name(first_name)
-            homework.set_surname(surname)
+            homework.set_description(description)
+            homework.set_file_path(file_path)
+            homework.set_start_event(start_event)
+            homework.set_end_event(end_event)
             result = homework
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
@@ -76,8 +61,8 @@ class HomeworkMapper(Mapper):
         for (maxid) in tuples:
             homework.set_id(maxid[0]+1)
 
-        command = "INSERT INTO homework (id, first_name, surname) VALUES (%s,%s,%s)"
-        data = (homework.get_id(), homework.get_first_name(), homework.get_surname())
+        command = "INSERT INTO homework (id, description, file_path, start_event, end_event, school_class_id, subject_id) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+        data = (homework.get_id(), homework.get_description(), homework.get_file_path(), homework.get_start_event(), homework.get_end_event(), homework.get_school_class_id(), homework.get_subject_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -88,8 +73,8 @@ class HomeworkMapper(Mapper):
     def update(self, homework):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE homework " + "SET first_name=%s, surname=%s WHERE id=%s"
-        data = (homework.get_first_name(), homework.get_surname(), homework.get_id())
+        command = "UPDATE homework " + "SET description=%s, file_path=%s, start_event=%s, end_event=%s WHERE id=%s"
+        data = (homework.get_description(), homework.get_file_path(), homework.get_start_event(), homework.get_end_event(), homework.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

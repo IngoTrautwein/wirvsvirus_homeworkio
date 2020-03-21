@@ -13,11 +13,10 @@ class SubjectMapper(Mapper):
         cursor.execute("SELECT * from subject")
         tuples = cursor.fetchall()
 
-        for (id, first_name, surname) in tuples:
+        for (id, name) in tuples:
             subject = Subject()
             subject.set_id(id)
-            subject.set_first_name(first_name)
-            subject.set_surname(surname)
+            subject.set_name(name)
             result.append(subject)
 
         self._cnx.commit()
@@ -25,18 +24,17 @@ class SubjectMapper(Mapper):
 
         return result
 
-    def find_by_surname(self, name):
+    def find_by_name(self, name):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM subject WHERE surname LIKE '{}' ORDER BY surname".format(name)
+        command = "SELECT id, name FROM subject WHERE name LIKE '{}' ORDER BY name".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
             subject = Subject()
             subject.set_id(id)
-            subject.set_first_name(first_name)
-            subject.set_surname(surname)
+            subject.set_name(name)
             result.append(subject)
 
         self._cnx.commit()
@@ -48,16 +46,15 @@ class SubjectMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM subject WHERE id={}".format(key)
+        command = "SELECT id, name FROM subject WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, first_name, surname) = tuples[0]
+            (id, name) = tuples[0]
             subject = Subject()
             subject.set_id(id)
-            subject.set_first_name(first_name)
-            subject.set_surname(surname)
+            subject.set_name(name)
             result = subject
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
@@ -76,8 +73,8 @@ class SubjectMapper(Mapper):
         for (maxid) in tuples:
             subject.set_id(maxid[0]+1)
 
-        command = "INSERT INTO subject (id, first_name, surname) VALUES (%s,%s,%s)"
-        data = (subject.get_id(), subject.get_first_name(), subject.get_surname())
+        command = "INSERT INTO subject (id, name) VALUES (%s,%s)"
+        data = (subject.get_id(), subject.get_name())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -88,8 +85,8 @@ class SubjectMapper(Mapper):
     def update(self, subject):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE subject " + "SET first_name=%s, surname=%s WHERE id=%s"
-        data = (subject.get_first_name(), subject.get_surname(), subject.get_id())
+        command = "UPDATE subject " + "SET name=%s WHERE id=%s"
+        data = (subject.get_name(), subject.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()

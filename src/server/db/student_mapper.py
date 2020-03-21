@@ -44,6 +44,25 @@ class StudentMapper(Mapper):
 
         return result
 
+    def find_by_class(self, class_id):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT id, first_name, surname FROM student WHERE class_id='{}' ORDER BY surname".format(class_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, first_name, surname) in tuples:
+            student = Student()
+            student.set_id(id)
+            student.set_first_name(first_name)
+            student.set_surname(surname)
+            result.append(student)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def find_by_key(self, key):
         result = None
 

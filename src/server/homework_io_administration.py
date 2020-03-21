@@ -2,10 +2,12 @@ from .bo.homework import Homework
 from .bo.school import School
 from .bo.school_class import SchoolClass
 from .bo.student import Student
+from .bo.subject import Subject
 from .bo.teacher import Teacher
 from .db.homework_mapper import HomeworkMapper
 
 from .db.student_mapper import StudentMapper
+from .db.subject_mapper import SubjectMapper
 from .db.teacher_mapper import TeacherMapper
 from .db.school_class_mapper import SchoolClassMapper
 from .db.school_mapper import SchoolMapper
@@ -31,6 +33,10 @@ class HomeworkIOAdministration:
     def get_student_by_surname(self, surname):
         with StudentMapper() as mapper:
             return mapper.find_by_surname(surname)
+
+    def get_student_by_class(self, class_id):
+        with StudentMapper() as mapper:
+            return mapper.find_by_class(class_id)
 
     def get_student_by_id(self, id):
         with StudentMapper() as mapper:
@@ -192,3 +198,34 @@ class HomeworkIOAdministration:
     def save_homework(self, homework):
         with HomeworkMapper() as mapper:
             mapper.update(homework)
+
+    """
+    Homework-spezifische Methoden
+    """
+    def create_subject(self, name):
+        subject = Subject()
+        subject.set_name(name)
+        subject.set_id(1)
+
+        with SubjectMapper() as mapper:
+            return mapper.insert(subject)
+
+    def get_all_subjects(self):
+        with SubjectMapper() as mapper:
+            return mapper.find_all()
+
+    def get_subject_by_name(self, name):
+        with SubjectMapper() as mapper:
+            return mapper.find_by_name(name)
+
+    def get_subject_by_id(self, id):
+        with SubjectMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def delete_subject(self, subject):
+        with SubjectMapper() as mapper:
+            mapper.delete(subject)
+
+    def save_subject(self, subject):
+        with SubjectMapper() as mapper:
+            mapper.update(subject)

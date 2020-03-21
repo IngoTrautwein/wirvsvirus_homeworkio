@@ -41,6 +41,20 @@ school_class = api.inherit('SchoolClass', bo, {
     'name': fields.String(attribute='_name', description='Name der School_Class')
 })
 
+subject = api.inherit('Subject', bo, {
+    'name': fields.String(attribute='_name', description='Name des Subjects')
+})
+
+homework = api.inherit('Homework', bo, {
+    'name': fields.String(attribute='_name', description='Name der Hausaufgabe'),
+    'file_path': fields.String(attribute='_file_path', description='Dateipfad der Hausaufgabe'),
+    'description': fields.String(attribute='_description', description='Beschreibung der Hausaufgabe'),
+    'start_event': fields.String(attribute='_start_event', description='Start_Event der Hausaufgabe'),
+    'end_event': fields.String(attribute='_end_event', description='End_Event der Hausaufgabe'),
+    'subject_id': fields.String(attribute='_name', description='subject_id der Hausaufgabe'),
+    'school_class_id': fields.String(attribute='_school_class_id', description='Klasse der Hausaufgabe')
+})
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -227,6 +241,42 @@ class SchoolOperations(Resource):
         adm.delete_school(school)
         return '', 200
 
+@homeworkio.route('/subjects')
+@homeworkio.response(500, 'Serverseitiger Fehler')
+class SubjectListOperations(Resource):
+    @homeworkio.marshal_list_with(subject)
+    def get(self):
+        adm = HomeworkIOAdministration()
+        subjects = adm.get_all_subjects()
+        # Wenn leer, wird eine leere Liste zurückgegeben
+        return subjects
+
+    @homeworkio.marshal_with(subject, code=200)
+    @homeworkio.expect(subject)
+    def post(self):
+        """Anlegen eines neuen Studenten."""
+        adm = HomeworkIOAdministration()
+        try:
+            name = api.payload["name"]
+            return adm.create_subject(name), 200
+        except KeyError:
+            return "KeyError", 500
+
+@homeworkio.route('/subjects/<int:id>')
+@homeworkio.response(500, 'Server Fehler.')
+@homeworkio.param('id', 'ID der subjects')
+class SubjectOperations(Resource):
+    @homeworkio.marshal_with(subject)
+    def get(self, id):
+        adm = HomeworkIOAdministration()
+        school = adm.get_subject_by_id(id)
+        return school
+
+    def delete(self, id):
+        adm = HomeworkIOAdministration()
+        subject = adm.get_subject_by_id(id)
+        adm.delete_subject(subject)
+        return '', 200
 
 if __name__ == '__main__':
     app.run(debug=True)
