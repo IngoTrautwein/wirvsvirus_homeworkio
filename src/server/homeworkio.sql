@@ -26,17 +26,14 @@ DROP TABLE IF EXISTS `homework`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `homework` (
   `id` int NOT NULL,
-  `school_class_id` int NOT NULL,
-  `subject_id` int NOT NULL,
   `file_path` varchar(100) DEFAULT NULL,
   `start_event` datetime DEFAULT NULL,
   `end_event` datetime DEFAULT NULL,
   `description` varchar(45) DEFAULT NULL,
+  `subject_school_class_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_school_class_id_hw_idx` (`school_class_id`),
-  KEY `fk_couse_id_hw_idx` (`subject_id`),
-  CONSTRAINT `fk_school_class_id_hw` FOREIGN KEY (`school_class_id`) REFERENCES `school_class` (`id`),
-  CONSTRAINT `fk_subject_id_hw` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`id`)
+  KEY `fk_subject_school_id_hw_idx` (`subject_school_class_id`),
+  CONSTRAINT `fk_subject_school_id_hw` FOREIGN KEY (`subject_school_class_id`) REFERENCES `subject_school_class` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -46,7 +43,7 @@ CREATE TABLE `homework` (
 
 LOCK TABLES `homework` WRITE;
 /*!40000 ALTER TABLE `homework` DISABLE KEYS */;
-INSERT INTO `homework` VALUES (0,0,0,'/path/to/file.pdf','2020-03-21 19:09:22','2020-03-22 19:09:22','Here are your homeworks for the next week.');
+INSERT INTO `homework` VALUES (0,'/path/to/file.pdf','2020-03-21 19:09:22','2020-03-22 19:09:22','Here are your homeworks for the next week.',0);
 /*!40000 ALTER TABLE `homework` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,4 +224,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-21 20:15:14
+-- Dump completed on 2020-03-21 20:55:33
