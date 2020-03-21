@@ -106,11 +106,15 @@ class HomeworkIOAdministration:
 
     def delete_school(self, school):
         with SchoolMapper() as mapper:
-            # Keine Prüfung ob Schüler, Lehrer etc. gelöscht wurden
             teachers = self.get_all_teachers()
             if not (teachers is None):
                 for t in teachers:
                     self.delete_teacher(t)
+
+            students = self.get_all_students()
+            if not (students is None):
+                for s in students:
+                    self.delete_student(s)
 
             mapper.delete(school)
 

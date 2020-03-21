@@ -20,4 +20,4 @@ class Teacher(bo.BusinessObject):
         self._surname = value
 
     def __str__(self):
-        return "Teacher: {}, {} {}".format(self.get_id(), self._first_name, self._surname)
+        return "Teacher: {}, {} {}".format(self.get_id(), self.get_first_name(), self.get_surname())

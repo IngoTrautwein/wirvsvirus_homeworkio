@@ -6,6 +6,7 @@ class Homework(bo.BusinessObject):
         super().__init__()
         self._first_name = ""
         self._surname = ""
+        self._file_path = ""
 
     def get_first_name(self):
         return self._first_name
@@ -19,6 +20,12 @@ class Homework(bo.BusinessObject):
     def set_surname(self, value):
         self._surname = value
 
+    def get_file_path(self):
+        return self._file_path
+
+    def set_file_path(self, value):
+        self._file_path = value
+
     @staticmethod
     def create(first_name, surname):
         homework = Homework()
@@ -27,4 +34,5 @@ class Homework(bo.BusinessObject):
         return homework
 
     def __str__(self):
-        return "Homework: {}, {} {}".format(self.get_id(), self._first_name, self._surname)
+        return "Homework: {}, {} {} - {}".format(self.get_id(), self.get_first_name(),
+                                                 self.get_surname(), self.get_file_path())
