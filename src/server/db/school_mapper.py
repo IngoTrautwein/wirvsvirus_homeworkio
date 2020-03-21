@@ -27,7 +27,7 @@ class SchoolMapper(Mapper):
     def find_by_name(self, name):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, name FROM schools WHERE name LIKE '{}' ORDER BY name".format(name)
+        command = "SELECT id, name FROM school WHERE name LIKE '{}' ORDER BY name".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -46,7 +46,7 @@ class SchoolMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, name FROM schools WHERE id={}".format(key)
+        command = "SELECT id, name FROM school WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -85,7 +85,7 @@ class SchoolMapper(Mapper):
     def update(self, school):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE classs " + "SET name=%s WHERE id=%s"
+        command = "UPDATE school " + "SET name=%s WHERE id=%s"
         data = (school.get_name(), school.get_id())
         cursor.execute(command, data)
 
@@ -100,6 +100,29 @@ class SchoolMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
+
+    def find_by_student_id(self, id):
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT id, name FROM school WHERE student_id={}".format(id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, name) = tuples[0]
+            school = School()
+            school.set_id(id)
+            school.set_name(name)
+            result = school
+        except IndexError:
+            """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
 
 
 if __name__ == "__main__":

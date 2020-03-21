@@ -2,7 +2,7 @@ from server.bo.school_class import SchoolClass
 from server.db.mapper import Mapper
 
 
-class ClassMapper(Mapper):
+class SchoolClassMapper(Mapper):
 
     def __init__(self):
         super().__init__()
@@ -101,9 +101,32 @@ class ClassMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+    def find_by_student_id(self, id):
+        result = None
+
+        cursor = self._cnx.cursor()
+        command = "SELECT id, name FROM school_class WHERE student_id={}".format(id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, name) = tuples[0]
+            school_class = SchoolClass()
+            school_class.set_id(id)
+            school_class.set_name(name)
+            result = school_class
+        except IndexError:
+            """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
+            result = None
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
 
 if __name__ == "__main__":
-    with SchoolClass() as mapper:
+    with SchoolClassMapper() as mapper:
         result = mapper.find_all()
         for p in result:
             print(p)
