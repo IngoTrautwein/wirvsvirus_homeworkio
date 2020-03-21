@@ -49,10 +49,9 @@ homework = api.inherit('Homework', bo, {
     'name': fields.String(attribute='_name', description='Name der Hausaufgabe'),
     'file_path': fields.String(attribute='_file_path', description='Dateipfad der Hausaufgabe'),
     'description': fields.String(attribute='_description', description='Beschreibung der Hausaufgabe'),
-    'start_event': fields.String(attribute='_start_event', description='Start_Event der Hausaufgabe'),
-    'end_event': fields.String(attribute='_end_event', description='End_Event der Hausaufgabe'),
-    'subject_id': fields.String(attribute='_name', description='subject_id der Hausaufgabe'),
-    'school_class_id': fields.String(attribute='_school_class_id', description='Klasse der Hausaufgabe')
+    'start_event': fields.DateTime(attribute='_start_event', description='Start_Event der Hausaufgabe'),
+    'end_event': fields.DateTime(attribute='_end_event', description='End_Event der Hausaufgabe'),
+    'sub_school_id': fields.Integer(attribute='_name', description='subject_id der Hausaufgabe')
 })
 
 def allowed_file(filename):
@@ -221,7 +220,8 @@ class SchoolListOperations(Resource):
         adm = HomeworkIOAdministration()
         try:
             name = api.payload["name"]
-            return adm.create_school(name), 200
+            address = api.payload["address"]
+            return adm.create_school(name, address), 200
         except KeyError:
             return "KeyError", 500
 
@@ -297,7 +297,9 @@ class HomeworkListOperations(Resource):
             file_path = api.payload["file_path"]
             start_event = api.payload["start_event"]
             end_event = api.payload["end_event"]
-            return adm.create_homework(description, file_path, start_event, end_event), 200
+            subject_id = api.payload["subject_id"]
+            school_class_id = api.payload["school_class_id"]
+            return adm.create_homework(description, file_path, start_event, end_event, school_class_id, subject_id), 200
         except KeyError:
             return "KeyError", 500
 

@@ -120,10 +120,11 @@ class HomeworkIOAdministration:
     """
     School-spezifische Methoden
     """
-    def create_school(self, name):
+    def create_school(self, name, address):
         school = School()
         school.set_name(name)
         school.set_id(1)
+        school.set_address(address)
 
         with SchoolMapper() as mapper:
             return mapper.insert(school)
@@ -190,9 +191,8 @@ class HomeworkIOAdministration:
     """
     Homework-spezifische Methoden
     """
-    def create_homework(self, name, description, file_path, start_event, end_event, school_class_id, subject_id):
+    def create_homework(self,  description, file_path, start_event, end_event, school_class_id, subject_id):
         homework = Homework()
-        homework.set_name(name)
         homework.set_description(description)
         homework.set_file_path(file_path)
         homework.set_start_event(start_event)
