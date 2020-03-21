@@ -65,6 +65,21 @@ class SchoolClassMapper(Mapper):
 
         return result
 
+    def find_ids_of_subject_school_class(self, key):
+        result = []
+        cursor = self._cnx.cursor()
+        command = "SELECT subject_school_class FROM subject_school_class WHERE school_class_id={}".format(key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id) in tuples:
+            result.append(id)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, school_class):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM school_class ")

@@ -190,19 +190,21 @@ class HomeworkIOAdministration:
     """
     Homework-spezifische Methoden
     """
-    def create_homework(self, name, school_class_id, subject_id):
+    def create_homework(self, name, description, file_path, start_event, end_event, school_class_id, subject_id):
         homework = Homework()
         homework.set_name(name)
+        homework.set_description(description)
+        homework.set_file_path(file_path)
+        homework.set_start_event(start_event)
+        homework.set_end_event(end_event)
         homework.set_id(1)
 
         with HomeworkMapper() as mapper:
             sub_school_id = mapper.insert_subject_school_class(school_class_id, subject_id)
+            homework.set_sub_school_id(sub_school_id)
             homework = mapper.insert(homework)
 
-
         return homework
-
-
 
     def get_all_homeworks(self):
         with HomeworkMapper() as mapper:
@@ -219,12 +221,7 @@ class HomeworkIOAdministration:
 
     def delete_homework(self, homework):
         with HomeworkMapper() as mapper:
-            # Keine Prüfung ob Schüler, Lehrer etc. gelöscht wurden
-            teachers = self.get_all_teachers()
-            if not (teachers is None):
-                for t in teachers:
-                    self.delete_teacher(t)
-
+            # Prüfung fehlt
             mapper.delete(homework)
 
     def save_homework(self, homework):
