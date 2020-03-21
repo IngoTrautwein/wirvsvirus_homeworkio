@@ -66,7 +66,7 @@ class HomeworkIOAdministration:
         with TeacherMapper() as mapper:
             return mapper.find_by_key(id)
 
-    def get_all_teacher(self):
+    def get_all_teachers(self):
         with TeacherMapper() as mapper:
             return mapper.find_all()
 
