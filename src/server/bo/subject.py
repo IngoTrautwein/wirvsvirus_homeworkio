@@ -1,7 +1,7 @@
 from server.bo import business_object as bo
 
 
-class Student(bo.BusinessObject):
+class Subject(bo.BusinessObject):
     def __init__(self):
         super().__init__()
         self._first_name = ""
@@ -21,10 +21,10 @@ class Student(bo.BusinessObject):
 
     @staticmethod
     def create(first_name, surname):
-        student = Student()
-        student.set_first_name(first_name)
-        student.set_surname(surname)
-        return student
+        subject = Subject()
+        subject.set_first_name(first_name)
+        subject.set_surname(surname)
+        return subject
 
     def __str__(self):
-        return "Student: {}, {} {}".format(self.get_id(), self._first_name, self._surname)
+        return "Subject: {}, {} {}".format(self.get_id(), self._first_name, self._surname)

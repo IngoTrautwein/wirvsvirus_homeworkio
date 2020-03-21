@@ -10,13 +10,14 @@ class SchoolMapper(Mapper):
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT id, name from school")
+        cursor.execute("SELECT id, name, address from school")
         tuples = cursor.fetchall()
 
-        for (id, name) in tuples:
+        for (id, name, address) in tuples:
             school = School()
             school.set_id(id)
             school.set_name(name)
+            school.set_address(address)
             result.append(school)
 
         self._cnx.commit()
@@ -27,14 +28,15 @@ class SchoolMapper(Mapper):
     def find_by_name(self, name):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, name FROM school WHERE name LIKE '{}' ORDER BY name".format(name)
+        command = "SELECT id, name, address FROM school WHERE name LIKE '{}' ORDER BY name".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, name) in tuples:
+        for (id, name, address) in tuples:
             school = School()
             school.set_id(id)
             school.set_name(name)
+            school.set_address(address)
             result.append(school)
 
         self._cnx.commit()
@@ -46,16 +48,19 @@ class SchoolMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, name FROM school WHERE id={}".format(key)
+        command = "SELECT id, name, address FROM school WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, name) = tuples[0]
+            (id, name, address) = tuples[0]
             school = School()
             school.set_id(id)
             school.set_name(name)
+            school.set_address(address)
             result = school
+
+
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
             result = None
@@ -73,8 +78,8 @@ class SchoolMapper(Mapper):
         for (maxid) in tuples:
             school.set_id(maxid[0]+1)
 
-        command = "INSERT INTO school (id, name) VALUES (%s,%s)"
-        data = (school.get_id(), school.get_())
+        command = "INSERT INTO school (id, name, address) VALUES (%s,%s,%s)"
+        data = (school.get_id(), school.get_name(), school.get_address())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -85,8 +90,8 @@ class SchoolMapper(Mapper):
     def update(self, school):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE school " + "SET name=%s WHERE id=%s"
-        data = (school.get_name(), school.get_id())
+        command = "UPDATE school " + "SET name=%s, address=%s WHERE id=%s"
+        data = (school.get_name(), school.get_address(), school.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -105,12 +110,12 @@ class SchoolMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, name FROM school WHERE student_id={}".format(id)
+        command = "SELECT id, name, address FROM school WHERE student_id={}".format(id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
-            (id, name) = tuples[0]
+            (id, name, address) = tuples[0]
             school = School()
             school.set_id(id)
             school.set_name(name)

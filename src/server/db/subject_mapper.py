@@ -1,8 +1,8 @@
-from server.bo.student import Student
+from server.bo.subject import Subject
 from server.db.mapper import Mapper
 
 
-class StudentMapper(Mapper):
+class SubjectMapper(Mapper):
 
     def __init__(self):
         super().__init__()
@@ -10,15 +10,15 @@ class StudentMapper(Mapper):
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from student")
+        cursor.execute("SELECT * from subject")
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
-            result.append(student)
+            subject = Subject()
+            subject.set_id(id)
+            subject.set_first_name(first_name)
+            subject.set_surname(surname)
+            result.append(subject)
 
         self._cnx.commit()
         cursor.close()
@@ -28,16 +28,16 @@ class StudentMapper(Mapper):
     def find_by_surname(self, name):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM student WHERE surname LIKE '{}' ORDER BY surname".format(name)
+        command = "SELECT id, first_name, surname FROM subject WHERE surname LIKE '{}' ORDER BY surname".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
-            result.append(student)
+            subject = Subject()
+            subject.set_id(id)
+            subject.set_first_name(first_name)
+            subject.set_surname(surname)
+            result.append(subject)
 
         self._cnx.commit()
         cursor.close()
@@ -48,17 +48,17 @@ class StudentMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM student WHERE id={}".format(key)
+        command = "SELECT id, first_name, surname FROM subject WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
             (id, first_name, surname) = tuples[0]
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
-            result = student
+            subject = Subject()
+            subject.set_id(id)
+            subject.set_first_name(first_name)
+            subject.set_surname(surname)
+            result = subject
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
             result = None
@@ -68,37 +68,37 @@ class StudentMapper(Mapper):
 
         return result
 
-    def insert(self, student):
+    def insert(self, subject):
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM student ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM subject ")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            student.set_id(maxid[0]+1)
+            subject.set_id(maxid[0]+1)
 
-        command = "INSERT INTO student (id, first_name, surname) VALUES (%s,%s,%s)"
-        data = (student.get_id(), student.get_first_name(), student.get_surname())
+        command = "INSERT INTO subject (id, first_name, surname) VALUES (%s,%s,%s)"
+        data = (subject.get_id(), subject.get_first_name(), subject.get_surname())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-        return student
+        return subject
 
-    def update(self, student):
+    def update(self, subject):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE student " + "SET first_name=%s, surname=%s WHERE id=%s"
-        data = (student.get_first_name(), student.get_surname(), student.get_id())
+        command = "UPDATE subject " + "SET first_name=%s, surname=%s WHERE id=%s"
+        data = (subject.get_first_name(), subject.get_surname(), subject.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, student):
+    def delete(self, subject):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM student WHERE id={}".format(student.get_id())
+        command = "DELETE FROM subject WHERE id={}".format(subject.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
@@ -106,7 +106,7 @@ class StudentMapper(Mapper):
 
 
 if __name__ == "__main__":
-    with StudentMapper() as mapper:
+    with SubjectMapper() as mapper:
         result = mapper.find_all()
         for p in result:
             print(p)

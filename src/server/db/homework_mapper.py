@@ -1,8 +1,8 @@
-from server.bo.student import Student
+from server.bo.homework import Homework
 from server.db.mapper import Mapper
 
 
-class StudentMapper(Mapper):
+class HomeworkMapper(Mapper):
 
     def __init__(self):
         super().__init__()
@@ -10,15 +10,15 @@ class StudentMapper(Mapper):
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from student")
+        cursor.execute("SELECT * from homework")
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
-            result.append(student)
+            homework = Homework()
+            homework.set_id(id)
+            homework.set_first_name(first_name)
+            homework.set_surname(surname)
+            result.append(homework)
 
         self._cnx.commit()
         cursor.close()
@@ -28,16 +28,16 @@ class StudentMapper(Mapper):
     def find_by_surname(self, name):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM student WHERE surname LIKE '{}' ORDER BY surname".format(name)
+        command = "SELECT id, first_name, surname FROM homework WHERE surname LIKE '{}' ORDER BY surname".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
-            result.append(student)
+            homework = Homework()
+            homework.set_id(id)
+            homework.set_first_name(first_name)
+            homework.set_surname(surname)
+            result.append(homework)
 
         self._cnx.commit()
         cursor.close()
@@ -48,17 +48,17 @@ class StudentMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM student WHERE id={}".format(key)
+        command = "SELECT id, first_name, surname FROM homework WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
         try:
             (id, first_name, surname) = tuples[0]
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
-            result = student
+            homework = Homework()
+            homework.set_id(id)
+            homework.set_first_name(first_name)
+            homework.set_surname(surname)
+            result = homework
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
             result = None
@@ -68,37 +68,37 @@ class StudentMapper(Mapper):
 
         return result
 
-    def insert(self, student):
+    def insert(self, homework):
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM student ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM homework ")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            student.set_id(maxid[0]+1)
+            homework.set_id(maxid[0]+1)
 
-        command = "INSERT INTO student (id, first_name, surname) VALUES (%s,%s,%s)"
-        data = (student.get_id(), student.get_first_name(), student.get_surname())
+        command = "INSERT INTO homework (id, first_name, surname) VALUES (%s,%s,%s)"
+        data = (homework.get_id(), homework.get_first_name(), homework.get_surname())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-        return student
+        return homework
 
-    def update(self, student):
+    def update(self, homework):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE student " + "SET first_name=%s, surname=%s WHERE id=%s"
-        data = (student.get_first_name(), student.get_surname(), student.get_id())
+        command = "UPDATE homework " + "SET first_name=%s, surname=%s WHERE id=%s"
+        data = (homework.get_first_name(), homework.get_surname(), homework.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
         cursor.close()
 
-    def delete(self, student):
+    def delete(self, homework):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM student WHERE id={}".format(student.get_id())
+        command = "DELETE FROM homework WHERE id={}".format(homework.get_id())
         cursor.execute(command)
 
         self._cnx.commit()
@@ -106,7 +106,7 @@ class StudentMapper(Mapper):
 
 
 if __name__ == "__main__":
-    with StudentMapper() as mapper:
+    with HomeworkMapper() as mapper:
         result = mapper.find_all()
         for p in result:
             print(p)

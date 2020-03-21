@@ -27,7 +27,7 @@ class SchoolClassMapper(Mapper):
     def find_by_name(self, name):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, name FROM school_classs WHERE name LIKE '{}' ORDER BY name".format(name)
+        command = "SELECT id, name FROM school_class WHERE name LIKE '{}' ORDER BY name".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -46,7 +46,7 @@ class SchoolClassMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, name FROM school_classs WHERE id={}".format(key)
+        command = "SELECT id, name FROM school_class WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -74,7 +74,7 @@ class SchoolClassMapper(Mapper):
             school_class.set_id(maxid[0]+1)
 
         command = "INSERT INTO school_class (id, name) VALUES (%s,%s)"
-        data = (school_class.get_id(), school_class.get_())
+        data = (school_class.get_id(), school_class.get_name())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -85,7 +85,7 @@ class SchoolClassMapper(Mapper):
     def update(self, school_class):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE classs " + "SET name=%s WHERE id=%s"
+        command = "UPDATE school_class " + "SET name=%s WHERE id=%s"
         data = (school_class.get_name(), school_class.get_id())
         cursor.execute(command, data)
 

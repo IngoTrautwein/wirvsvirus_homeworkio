@@ -1,7 +1,9 @@
+from .bo.homework import Homework
 from .bo.school import School
 from .bo.school_class import SchoolClass
 from .bo.student import Student
 from .bo.teacher import Teacher
+from .db.homework_mapper import HomeworkMapper
 
 from .db.student_mapper import StudentMapper
 from .db.teacher_mapper import TeacherMapper
@@ -81,6 +83,14 @@ class HomeworkIOAdministration:
     """
     School-spezifische Methoden
     """
+    def create_school(self, name):
+        school = School()
+        school.set_name(name)
+        school.set_id(1)
+
+        with SchoolMapper() as mapper:
+            return mapper.insert(school)
+
     def get_all_schools(self):
         with SchoolMapper() as mapper:
             return mapper.find_all()
@@ -96,7 +106,16 @@ class HomeworkIOAdministration:
 
     def delete_school(self, school):
         with SchoolMapper() as mapper:
-            # Keine Prüfung ob Schüler, Lehrer etc. gelöscht wurden
+            teachers = self.get_all_teachers()
+            if not (teachers is None):
+                for t in teachers:
+                    self.delete_teacher(t)
+
+            students = self.get_all_students()
+            if not (students is None):
+                for s in students:
+                    self.delete_student(s)
+
             mapper.delete(school)
 
     def save_school(self, school):
@@ -106,6 +125,13 @@ class HomeworkIOAdministration:
     """
     School_Class-spezifische Methoden
     """
+    def create_school_class(self, name):
+        school_class = SchoolClass()
+        school_class.set_name(name)
+        school_class.set_id(1)
+
+        with SchoolClassMapper() as mapper:
+            return mapper.insert(school_class)
 
     def get_all_school_classes(self):
         with SchoolClassMapper() as mapper:
@@ -128,3 +154,41 @@ class HomeworkIOAdministration:
     def save_school_class(self, school_class):
         with SchoolClassMapper() as mapper:
             mapper.update(school_class)
+
+    """
+    Homework-spezifische Methoden
+    """
+    def create_homework(self, name):
+        homework = Homework()
+        homework.set_name(name)
+        homework.set_id(1)
+
+        with HomeworkMapper() as mapper:
+            return mapper.insert(homework)
+
+    def get_all_homeworks(self):
+        with HomeworkMapper() as mapper:
+            return mapper.find_all()
+
+    def get_homework_by_id(self, id):
+        with HomeworkMapper() as mapper:
+            return mapper.find_by_key(id)
+
+    def get_school_of_student(self, student):
+        with HomeworkMapper() as mapper:
+            # keine Prüfung vorhanden
+            return mapper.find_by_student_id(student.get_id())
+
+    def delete_homework(self, homework):
+        with HomeworkMapper() as mapper:
+            # Keine Prüfung ob Schüler, Lehrer etc. gelöscht wurden
+            teachers = self.get_all_teachers()
+            if not (teachers is None):
+                for t in teachers:
+                    self.delete_teacher(t)
+
+            mapper.delete(homework)
+
+    def save_homework(self, homework):
+        with HomeworkMapper() as mapper:
+            mapper.update(homework)
