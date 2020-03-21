@@ -4,27 +4,19 @@ from server.bo import business_object as bo
 class Subject(bo.BusinessObject):
     def __init__(self):
         super().__init__()
-        self._first_name = ""
-        self._surname = ""
+        self._name = ""
 
-    def get_first_name(self):
-        return self._first_name
+    def get_name(self):
+        return self._name
 
-    def set_first_name(self, value):
-        self._first_name = value
-
-    def get_surname(self):
-        return self._surname
-
-    def set_surname(self, value):
-        self._surname = value
+    def set_name(self, value):
+        self._name = value
 
     @staticmethod
-    def create(first_name, surname):
+    def create(name):
         subject = Subject()
-        subject.set_first_name(first_name)
-        subject.set_surname(surname)
+        subject.set_name(name)
         return subject
 
     def __str__(self):
-        return "Subject: {}, {} {}".format(self.get_id(), self._first_name, self._surname)
+        return "Subject: {}, {}".format(self.get_id(), self._name)

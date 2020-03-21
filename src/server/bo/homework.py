@@ -3,12 +3,15 @@ import datetime
 
 
 class Homework(bo.BusinessObject):
+
     def __init__(self):
         super().__init__()
         self._file_path = ""
         self._description = ""
         self._start_event = datetime.datetime.now()
         self._end_event = datetime.datetime.now()
+        self._subject_id = 0
+        self._school_class_id = 0
 
     def get_file_path(self):
         return self._file_path
@@ -34,11 +37,22 @@ class Homework(bo.BusinessObject):
     def set_end_event(self, value):
         self._end_event = value
 
+    def get_subject_id(self):
+        return self._subject_id
+
+    def set_subject_id(self, value):
+        self._subject_id = value
+
+    def get_school_class_id(self):
+        return self._school_class_id
+
+    def set_school_class_id(self, value):
+        self._school_class_id = value
+
     @staticmethod
-    def create(first_name, surname):
+    def create(description):
         homework = Homework()
-        homework.set_first_name(first_name)
-        homework.set_surname(surname)
+        homework.set_description(description)
         return homework
 
     def __str__(self):
