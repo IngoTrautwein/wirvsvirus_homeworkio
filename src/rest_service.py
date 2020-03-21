@@ -41,11 +41,11 @@ class HelloWorld(Resource):
 
 @homeworkio.route('/students')
 @homeworkio.response(500, 'Serverseitiger Fehler')
-class CustomerListOperations(Resource):
+class StudentListOperations(Resource):
     @homeworkio.marshal_list_with(student)
     def get(self):
         adm = HomeworkIOAdministration()
-        students = adm.get_all_customers()
+        students = adm.get_all_students()
         # Wenn leer, wird eine leere Liste zurückgegeben
         return students
 
@@ -53,6 +53,60 @@ class CustomerListOperations(Resource):
     @homeworkio.expect(student)
     def post(self):
         """Anlegen eines neuen Studenten."""
+        adm = HomeworkIOAdministration()
+
+        return "not implemented yet", 200
+
+@homeworkio.route('/teachers')
+@homeworkio.response(500, 'Serverseitiger Fehler')
+class TeacherListOperations(Resource):
+    @homeworkio.marshal_list_with(teacher)
+    def get(self):
+        adm = HomeworkIOAdministration()
+        teachers = adm.get_all_teachers()
+        # Wenn leer, wird eine leere Liste zurückgegeben
+        return teachers
+
+    @homeworkio.marshal_with(teacher, code=200)
+    @homeworkio.expect(teacher)
+    def post(self):
+        """Anlegen eines neuen Teachers."""
+        adm = HomeworkIOAdministration()
+
+        return "not implemented yet", 200
+
+@homeworkio.route('/school_classes')
+@homeworkio.response(500, 'Serverseitiger Fehler')
+class School_ClassListOperations(Resource):
+    @homeworkio.marshal_list_with(school_class)
+    def get(self):
+        adm = HomeworkIOAdministration()
+        school_classes = adm.get_all_school_classes()
+        # Wenn leer, wird eine leere Liste zurückgegeben
+        return school_classes
+
+    @homeworkio.marshal_with(school_class, code=200)
+    @homeworkio.expect(school_class)
+    def post(self):
+        """Anlegen eines neuen school_class."""
+        adm = HomeworkIOAdministration()
+
+        return "not implemented yet", 200
+
+@homeworkio.route('/schools')
+@homeworkio.response(500, 'Serverseitiger Fehler')
+class SchoolListOperations(Resource):
+    @homeworkio.marshal_list_with(school)
+    def get(self):
+        adm = HomeworkIOAdministration()
+        schools = adm.get_all_schools()
+        # Wenn leer, wird eine leere Liste zurückgegeben
+        return schools
+
+    @homeworkio.marshal_with(school, code=200)
+    @homeworkio.expect(school)
+    def post(self):
+        """Anlegen eines neuen school."""
         adm = HomeworkIOAdministration()
 
         return "not implemented yet", 200
