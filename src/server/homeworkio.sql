@@ -82,6 +82,9 @@ CREATE TABLE `homework` (
   `school_class_id` int NOT NULL,
   `course_id` int NOT NULL,
   `file_path` varchar(100) DEFAULT NULL,
+  `start_event` datetime DEFAULT NULL,
+  `end_event` datetime DEFAULT NULL,
+  `description` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`homework_id`),
   KEY `fk_school_class_id_hw_idx` (`school_class_id`),
   KEY `fk_couse_id_hw_idx` (`course_id`),
@@ -96,7 +99,7 @@ CREATE TABLE `homework` (
 
 LOCK TABLES `homework` WRITE;
 /*!40000 ALTER TABLE `homework` DISABLE KEYS */;
-INSERT INTO `homework` VALUES (0,0,0,'/path/to/file.pdf');
+INSERT INTO `homework` VALUES (0,0,0,'/path/to/file.pdf','2020-03-21 19:09:22','2020-03-22 19:09:22','Here are your homeworks for the next week.');
 /*!40000 ALTER TABLE `homework` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,4 +253,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-21 18:54:33
+-- Dump completed on 2020-03-21 19:12:31
