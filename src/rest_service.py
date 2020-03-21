@@ -69,17 +69,11 @@ class StudentListOperations(Resource):
 class StudentOperations(Resource):
     @homeworkio.marshal_with(student)
     def get(self, id):
-        """Auslesen eines bestimmten Customer-Objekts.
-        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
-        """
         adm = HomeworkIOAdministration()
         student = adm.get_student_by_id(id)
         return student
 
     def delete(self, id):
-        """Löschen eines bestimmten Customer-Objekts.
-        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
-        """
         adm = HomeworkIOAdministration()
         student = adm.get_student_by_id(id)
         adm.delete_student(student)
@@ -107,6 +101,22 @@ class TeacherListOperations(Resource):
         except KeyError:
             return "KeyError", 500
 
+@homeworkio.route('/teachers/<int:id>')
+@homeworkio.response(500, 'Server Fehler.')
+@homeworkio.param('id', 'ID des Teachers')
+class TeacherOperations(Resource):
+    @homeworkio.marshal_with(teacher)
+    def get(self, id):
+        adm = HomeworkIOAdministration()
+        teacher = adm.get_teacher_by_id(id)
+        return teacher
+
+    def delete(self, id):
+        adm = HomeworkIOAdministration()
+        teacher = adm.get_teacher_by_id(id)
+        adm.delete_teacher(teacher)
+        return '', 200
+
 @homeworkio.route('/school_classes')
 @homeworkio.response(500, 'Serverseitiger Fehler')
 class School_ClassListOperations(Resource):
@@ -128,6 +138,22 @@ class School_ClassListOperations(Resource):
         except KeyError:
             return "KeyError", 500
 
+@homeworkio.route('/school_classes/<int:id>')
+@homeworkio.response(500, 'Server Fehler.')
+@homeworkio.param('id', 'ID der school_classes')
+class School_ClassOperations(Resource):
+    @homeworkio.marshal_with(school_class)
+    def get(self, id):
+        adm = HomeworkIOAdministration()
+        school_class = adm.get_school_class_by_id(id)
+        return school_class
+
+    def delete(self, id):
+        adm = HomeworkIOAdministration()
+        school_class = adm.get_school_class_by_id(id)
+        adm.delete_school_class(school_class)
+        return '', 200
+
 @homeworkio.route('/schools')
 @homeworkio.response(500, 'Serverseitiger Fehler')
 class SchoolListOperations(Resource):
@@ -148,6 +174,22 @@ class SchoolListOperations(Resource):
             return adm.create_school(name), 200
         except KeyError:
             return "KeyError", 500
+
+@homeworkio.route('/schools/<int:id>')
+@homeworkio.response(500, 'Server Fehler.')
+@homeworkio.param('id', 'ID der schools')
+class SchoolOperations(Resource):
+    @homeworkio.marshal_with(school)
+    def get(self, id):
+        adm = HomeworkIOAdministration()
+        school = adm.get_school_by_id(id)
+        return school
+
+    def delete(self, id):
+        adm = HomeworkIOAdministration()
+        school = adm.get_school_by_id(id)
+        adm.delete_school(school)
+        return '', 200
 
 
 if __name__ == '__main__':
