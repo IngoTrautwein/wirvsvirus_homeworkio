@@ -26,12 +26,9 @@ DROP TABLE IF EXISTS `school`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `school` (
   `id` int NOT NULL,
-  `school_class_id` int NOT NULL,
   `name` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `school_class_id` (`id`),
-  KEY `t_school_class_school_ibfk_1` (`school_class_id`),
-  CONSTRAINT `t_school_class_school_ibfk_1` FOREIGN KEY (`school_class_id`) REFERENCES `school_class` (`id`)
+  KEY `school_class_id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,7 +38,7 @@ CREATE TABLE `school` (
 
 LOCK TABLES `school` WRITE;
 /*!40000 ALTER TABLE `school` DISABLE KEYS */;
-INSERT INTO `school` VALUES (0,0,'SP Gymnasium');
+INSERT INTO `school` VALUES (0,'SP Gymnasium');
 /*!40000 ALTER TABLE `school` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,16 +51,16 @@ DROP TABLE IF EXISTS `school_class`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `school_class` (
   `id` int NOT NULL,
-  `teacher_id` int NOT NULL,
   `student_id` int NOT NULL,
   `name` varchar(20) NOT NULL,
+  `school_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `teacher_id` (`id`),
-  KEY `t_teacher_school_class_ibfk_1` (`teacher_id`),
   KEY `student_id` (`id`),
   KEY `t_student_school_class_ibfk_1` (`student_id`),
-  CONSTRAINT `t_student_school_class_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
-  CONSTRAINT `t_teacher_school_class_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`)
+  KEY `t_school_school_class_ibfk_1_idx` (`school_id`),
+  CONSTRAINT `t_school_school_class_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
+  CONSTRAINT `t_student_school_class_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -73,7 +70,7 @@ CREATE TABLE `school_class` (
 
 LOCK TABLES `school_class` WRITE;
 /*!40000 ALTER TABLE `school_class` DISABLE KEYS */;
-INSERT INTO `school_class` VALUES (0,0,0,'4a');
+INSERT INTO `school_class` VALUES (0,0,'4a',0);
 /*!40000 ALTER TABLE `school_class` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-21 13:48:13
+-- Dump completed on 2020-03-21 16:40:34
