@@ -26,11 +26,11 @@ teacher = homeworkio.inherit('Teacher', bo, {
 })
 
 school = homeworkio.inherit('School', bo, {
-    'name': fields.Integer(attribute='_name', description='Name der School')
+    'name': fields.String(attribute='_name', description='Name der School')
 })
 
 school_class = homeworkio.inherit('SchoolClass', bo, {
-    'name': fields.Integer(attribute='_name', description='Name der School_Class')
+    'name': fields.String(attribute='_name', description='Name der School_Class')
 })
 
 @homeworkio.route('/helloworld')

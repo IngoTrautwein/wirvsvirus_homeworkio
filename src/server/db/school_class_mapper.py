@@ -10,7 +10,7 @@ class SchoolClassMapper(Mapper):
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from school_class")
+        cursor.execute("SELECT id, name from school_class")
         tuples = cursor.fetchall()
 
         for (id, name) in tuples:

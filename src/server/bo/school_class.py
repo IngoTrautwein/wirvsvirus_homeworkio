@@ -13,4 +13,4 @@ class SchoolClass(bo.BusinessObject):
         self._name = value
 
     def __str__(self):
-        return "SchoolClass: {}, {}, Students: {}".format(self.get_id(), self._name)
+        return "SchoolClass: {}, {}".format(self.get_id(), self._name)
