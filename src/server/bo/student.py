@@ -19,5 +19,12 @@ class Student(bo.BusinessObject):
     def set_surname(self, value):
         self._surname = value
 
+    @staticmethod
+    def create(first_name, surname):
+        student = Student()
+        student.set_first_name(first_name)
+        student.set_surname(surname)
+        return student
+
     def __str__(self):
         return "Student: {}, {} {}".format(self.get_id(), self._first_name, self._surname)

@@ -8,28 +8,30 @@ app = Flask(__name__)
 
 CORS(app, resources=r'/homeworkio/*')
 
-homeworkio = Api(app, version='1.0', title='HomeworkIO API',
+api = Api(app, version='1.0', title='HomeworkIO API',
     description='Dies ist eine API.')
 
-bo = homeworkio.model('BusinessObject', {
-    'id': fields.Integer(attribute='_id', description='Der Unique Identifier eines Business Object'),
+homeworkio = api.namespace('homeworkio', description='Funktionen der homeworkio')
+
+bo = api.model('BusinessObject', {
+    'id': fields.Integer(readonly=True, attribute='_id', description='Der Unique Identifier eines Business Object'),
 })
 
-student = homeworkio.inherit('Student', bo, {
-    'first_name': fields.String(attribute='_first_name', description='Vorname Student'),
-    'surname': fields.String(attribute='_surname', description='Nachname Student')
+student = api.inherit('Student', bo, {
+    'first_name': fields.String(required=True, attribute='_first_name', description='Vorname Student'),
+    'surname': fields.String(required=True, attribute='_surname', description='Nachname Student')
 })
 
-teacher = homeworkio.inherit('Teacher', bo, {
+teacher = api.inherit('Teacher', bo, {
     'first_name': fields.String(attribute='_first_name', description='Vorname Teacher'),
     'surname': fields.String(attribute='_surname', description='Nachname Teacher')
 })
 
-school = homeworkio.inherit('School', bo, {
+school = api.inherit('School', bo, {
     'name': fields.String(attribute='_name', description='Name der School')
 })
 
-school_class = homeworkio.inherit('SchoolClass', bo, {
+school_class = api.inherit('SchoolClass', bo, {
     'name': fields.String(attribute='_name', description='Name der School_Class')
 })
 
@@ -54,8 +56,34 @@ class StudentListOperations(Resource):
     def post(self):
         """Anlegen eines neuen Studenten."""
         adm = HomeworkIOAdministration()
+        try:
+            first_name = api.payload["first_name"]
+            surname = api.payload["surname"]
+            return adm.create_student(first_name, surname), 200
+        except KeyError:
+            return "KeyError", 500
 
-        return "not implemented yet", 200
+@homeworkio.route('/students/<int:id>')
+@homeworkio.response(500, 'Server Fehler.')
+@homeworkio.param('id', 'ID des Studenten')
+class StudentOperations(Resource):
+    @homeworkio.marshal_with(student)
+    def get(self, id):
+        """Auslesen eines bestimmten Customer-Objekts.
+        Das auszulesende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = HomeworkIOAdministration()
+        student = adm.get_student_by_id(id)
+        return student
+
+    def delete(self, id):
+        """Löschen eines bestimmten Customer-Objekts.
+        Das zu löschende Objekt wird durch die ```id``` in dem URI bestimmt.
+        """
+        adm = HomeworkIOAdministration()
+        student = adm.get_student_by_id(id)
+        adm.delete_student(student)
+        return '', 200
 
 @homeworkio.route('/teachers')
 @homeworkio.response(500, 'Serverseitiger Fehler')
@@ -70,10 +98,14 @@ class TeacherListOperations(Resource):
     @homeworkio.marshal_with(teacher, code=200)
     @homeworkio.expect(teacher)
     def post(self):
-        """Anlegen eines neuen Teachers."""
+        """Anlegen eines neuen Studenten."""
         adm = HomeworkIOAdministration()
-
-        return "not implemented yet", 200
+        try:
+            first_name = api.payload["first_name"]
+            surname = api.payload["surname"]
+            return adm.create_teacher(first_name, surname), 200
+        except KeyError:
+            return "KeyError", 500
 
 @homeworkio.route('/school_classes')
 @homeworkio.response(500, 'Serverseitiger Fehler')
@@ -88,10 +120,13 @@ class School_ClassListOperations(Resource):
     @homeworkio.marshal_with(school_class, code=200)
     @homeworkio.expect(school_class)
     def post(self):
-        """Anlegen eines neuen school_class."""
+        """Anlegen eines neuen Studenten."""
         adm = HomeworkIOAdministration()
-
-        return "not implemented yet", 200
+        try:
+            name = api.payload["name"]
+            return adm.create_school_class(name), 200
+        except KeyError:
+            return "KeyError", 500
 
 @homeworkio.route('/schools')
 @homeworkio.response(500, 'Serverseitiger Fehler')
@@ -106,10 +141,13 @@ class SchoolListOperations(Resource):
     @homeworkio.marshal_with(school, code=200)
     @homeworkio.expect(school)
     def post(self):
-        """Anlegen eines neuen school."""
+        """Anlegen eines neuen Studenten."""
         adm = HomeworkIOAdministration()
-
-        return "not implemented yet", 200
+        try:
+            name = api.payload["name"]
+            return adm.create_school(name), 200
+        except KeyError:
+            return "KeyError", 500
 
 
 if __name__ == '__main__':

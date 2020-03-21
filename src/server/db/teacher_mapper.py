@@ -28,7 +28,7 @@ class TeacherMapper(Mapper):
     def find_by_surname(self, name):
         result = []
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM teachers WHERE surname LIKE '{}' ORDER BY surname".format(name)
+        command = "SELECT id, first_name, surname FROM teacher WHERE surname LIKE '{}' ORDER BY surname".format(name)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -48,7 +48,7 @@ class TeacherMapper(Mapper):
         result = None
 
         cursor = self._cnx.cursor()
-        command = "SELECT id, first_name, surname FROM teachers WHERE id={}".format(key)
+        command = "SELECT id, first_name, surname FROM teacher WHERE id={}".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
@@ -70,13 +70,13 @@ class TeacherMapper(Mapper):
 
     def insert(self, teacher):
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM teachers ")
+        cursor.execute("SELECT MAX(id) AS maxid FROM teacher ")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
             teacher.set_id(maxid[0]+1)
 
-        command = "INSERT INTO teachers (id, first_name, surname) VALUES (%s,%s,%s)"
+        command = "INSERT INTO teacher (id, first_name, surname) VALUES (%s,%s,%s)"
         data = (teacher.get_id(), teacher.get_first_name(), teacher.get_surname())
         cursor.execute(command, data)
 
@@ -88,7 +88,7 @@ class TeacherMapper(Mapper):
     def update(self, teacher):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE teachers " + "SET first_name=%s, surname=%s WHERE id=%s"
+        command = "UPDATE teacher " + "SET first_name=%s, surname=%s WHERE id=%s"
         data = (teacher.get_first_name(), teacher.get_surname(), teacher.get_id())
         cursor.execute(command, data)
 
@@ -98,7 +98,7 @@ class TeacherMapper(Mapper):
     def delete(self, teacher):
         cursor = self._cnx.cursor()
 
-        command = "DELETE FROM teachers WHERE id={}".format(teacher.get_id())
+        command = "DELETE FROM teacher WHERE id={}".format(teacher.get_id())
         cursor.execute(command)
 
         self._cnx.commit()

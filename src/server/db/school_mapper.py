@@ -74,7 +74,7 @@ class SchoolMapper(Mapper):
             school.set_id(maxid[0]+1)
 
         command = "INSERT INTO school (id, name) VALUES (%s,%s)"
-        data = (school.get_id(), school.get_())
+        data = (school.get_id(), school.get_name())
         cursor.execute(command, data)
 
         self._cnx.commit()

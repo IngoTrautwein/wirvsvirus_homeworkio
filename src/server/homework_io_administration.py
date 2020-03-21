@@ -81,6 +81,14 @@ class HomeworkIOAdministration:
     """
     School-spezifische Methoden
     """
+    def create_school(self, name):
+        school = School()
+        school.set_name(name)
+        school.set_id(1)
+
+        with SchoolMapper() as mapper:
+            return mapper.insert(school)
+
     def get_all_schools(self):
         with SchoolMapper() as mapper:
             return mapper.find_all()
@@ -106,6 +114,13 @@ class HomeworkIOAdministration:
     """
     School_Class-spezifische Methoden
     """
+    def create_school_class(self, name):
+        school_class = SchoolClass()
+        school_class.set_name(name)
+        school_class.set_id(1)
+
+        with SchoolClassMapper() as mapper:
+            return mapper.insert(school_class)
 
     def get_all_school_classes(self):
         with SchoolClassMapper() as mapper:
