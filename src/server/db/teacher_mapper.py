@@ -68,6 +68,58 @@ class TeacherMapper(Mapper):
 
         return result
 
+    def find_teachers_by_school_class(self, school_class):
+        result = []
+
+        cursor = self._cnx.cursor()
+        command = "SELECT teacher_id FROM subject_school_class WHERE school_class_id={}".format(school_class)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id) in tuples:
+            result.append(id)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_teachers_by_subject(self, subject):
+        result = []
+
+        cursor = self._cnx.cursor()
+        command = "SELECT teacher_id FROM subject_school_class WHERE subject_id={}".format(subject)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id) in tuples:
+            result.append(id)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
+    def find_teachers_by_school(self, school):
+        result = []
+
+        cursor = self._cnx.cursor()
+        command = "SELECT * from teacher WHERE id={}".format(school)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, first_name, surname) in tuples:
+            teacher = Teacher()
+            teacher.set_id(id)
+            teacher.set_first_name(first_name)
+            teacher.set_surname(surname)
+            result.append(teacher)
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, teacher):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM teacher ")

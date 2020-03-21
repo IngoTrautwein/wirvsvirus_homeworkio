@@ -38,6 +38,10 @@ class HomeworkIOAdministration:
         with StudentMapper() as mapper:
             return mapper.find_by_class(class_id)
 
+    def get_student_by_school(self, school_id):
+        with StudentMapper() as mapper:
+            return mapper.find_by_school(school_id)
+
     def get_student_by_id(self, id):
         with StudentMapper() as mapper:
             return mapper.find_by_key(id)
@@ -74,6 +78,33 @@ class HomeworkIOAdministration:
         with TeacherMapper() as mapper:
             return mapper.find_by_key(id)
 
+    def get_teachers_by_school(self, school):
+        result = []
+        with TeacherMapper() as mapper:
+            ids = mapper.find_teachers_by_school(school)
+            for id in ids:
+                teacher = mapper.find_by_key(id)
+                result.append(teacher)
+            return result
+
+    def get_teachers_by_school_class(self, school_class):
+        result = []
+        with TeacherMapper() as mapper:
+            ids = mapper.find_teachers_by_school_class(school_class)
+            for id in ids:
+                teacher = mapper.find_by_key(id)
+                result.append(teacher)
+            return result
+
+    def get_teachers_by_subject(self, subject):
+        result = []
+        with TeacherMapper() as mapper:
+            ids = mapper.find_teachers_by_subject(subject)
+            for id in ids:
+                teacher = mapper.find_by_key(id)
+                result.append(teacher)
+            return result
+
     def get_all_teachers(self):
         with TeacherMapper() as mapper:
             return mapper.find_all()
@@ -104,11 +135,6 @@ class HomeworkIOAdministration:
     def get_school_by_id(self, id):
         with SchoolMapper() as mapper:
             return mapper.find_by_key(id)
-
-    def get_school_of_student(self, student):
-        with SchoolMapper() as mapper:
-            # keine Prüfung vorhanden
-            return mapper.find_by_student_id(student.get_id())
 
     def delete_school(self, school):
         with SchoolMapper() as mapper:
@@ -164,13 +190,19 @@ class HomeworkIOAdministration:
     """
     Homework-spezifische Methoden
     """
-    def create_homework(self, name):
+    def create_homework(self, name, school_class_id, subject_id):
         homework = Homework()
         homework.set_name(name)
         homework.set_id(1)
 
         with HomeworkMapper() as mapper:
-            return mapper.insert(homework)
+            sub_school_id = mapper.insert_subject_school_class(school_class_id, subject_id)
+            homework = mapper.insert(homework)
+
+
+        return homework
+
+
 
     def get_all_homeworks(self):
         with HomeworkMapper() as mapper:
@@ -200,7 +232,7 @@ class HomeworkIOAdministration:
             mapper.update(homework)
 
     """
-    Homework-spezifische Methoden
+    Subject-spezifische Methoden
     """
     def create_subject(self, name):
         subject = Subject()

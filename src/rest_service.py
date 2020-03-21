@@ -278,5 +278,45 @@ class SubjectOperations(Resource):
         adm.delete_subject(subject)
         return '', 200
 
+@homeworkio.route('/homeworks')
+@homeworkio.response(500, 'Serverseitiger Fehler')
+class HomeworkListOperations(Resource):
+    @homeworkio.marshal_list_with(homework)
+    def get(self):
+        adm = HomeworkIOAdministration()
+        homeworks = adm.get_all_homeworks()
+        # Wenn leer, wird eine leere Liste zurückgegeben
+        return homeworks
+
+    @homeworkio.marshal_with(homework, code=200)
+    @homeworkio.expect(homework)
+    def post(self):
+        adm = HomeworkIOAdministration()
+        try:
+            description = api.payload["description"]
+            file_path = api.payload["file_path"]
+            start_event = api.payload["start_event"]
+            end_event = api.payload["end_event"]
+            return adm.create_homework(description, file_path, start_event, end_event), 200
+        except KeyError:
+            return "KeyError", 500
+
+@homeworkio.route('/homeworks/<int:id>')
+@homeworkio.response(500, 'Server Fehler.')
+@homeworkio.param('id', 'ID der Homework')
+class HomeworkOperations(Resource):
+    @homeworkio.marshal_with(subject)
+    def get(self, id):
+        adm = HomeworkIOAdministration()
+        homework = adm.get_homework_by_id(id)
+        return homework
+
+    def delete(self, id):
+        adm = HomeworkIOAdministration()
+        homework = adm.get_homework_by_id(id)
+        adm.delete_homework(homework)
+        return '', 200
+
+
 if __name__ == '__main__':
     app.run(debug=True)

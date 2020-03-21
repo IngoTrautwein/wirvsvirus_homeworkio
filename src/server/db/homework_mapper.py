@@ -61,8 +61,8 @@ class HomeworkMapper(Mapper):
         for (maxid) in tuples:
             homework.set_id(maxid[0]+1)
 
-        command = "INSERT INTO homework (id, description, file_path, start_event, end_event, school_class_id, subject_id) VALUES (%s,%s,%s,%s,%s,%s,%s)"
-        data = (homework.get_id(), homework.get_description(), homework.get_file_path(), homework.get_start_event(), homework.get_end_event(), homework.get_school_class_id(), homework.get_subject_id())
+        command = "INSERT INTO homework (id, description, file_path, start_event, end_event, ) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+        data = (homework.get_id(), homework.get_description(), homework.get_file_path(), homework.get_start_event(), homework.get_end_event(), school_class_id, subject_id)
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -70,11 +70,11 @@ class HomeworkMapper(Mapper):
 
         return homework
 
-    def update(self, homework):
+    def update(self, homework, school_class_id, subject_id):
         cursor = self._cnx.cursor()
 
-        command = "UPDATE homework " + "SET description=%s, file_path=%s, start_event=%s, end_event=%s WHERE id=%s"
-        data = (homework.get_description(), homework.get_file_path(), homework.get_start_event(), homework.get_end_event(), homework.get_id())
+        command = "UPDATE homework " + "SET description=%s, file_path=%s, start_event=%s, end_event=%s , school_class_id=%s, subject_id=%s, WHERE id=%s"
+        data = (homework.get_description(), homework.get_file_path(), homework.get_start_event(), homework.get_end_event(), school_class_id, subject_id, homework.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
