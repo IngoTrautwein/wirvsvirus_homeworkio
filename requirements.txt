@@ -1,3 +1,5 @@
 flask
 flask-restx
 flask-cors
+mysql
+mysql-connector-python-rf
