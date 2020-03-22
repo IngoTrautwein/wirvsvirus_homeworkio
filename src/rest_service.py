@@ -46,12 +46,11 @@ subject = api.inherit('Subject', bo, {
 })
 
 homework = api.inherit('Homework', bo, {
-    'name': fields.String(attribute='_name', description='Name der Hausaufgabe'),
     'file_path': fields.String(attribute='_file_path', description='Dateipfad der Hausaufgabe'),
     'description': fields.String(attribute='_description', description='Beschreibung der Hausaufgabe'),
     'start_event': fields.DateTime(attribute='_start_event', description='Start_Event der Hausaufgabe'),
     'end_event': fields.DateTime(attribute='_end_event', description='End_Event der Hausaufgabe'),
-    'sub_school_id': fields.Integer(attribute='_name', description='subject_id der Hausaufgabe')
+    'sub_school_id': fields.Integer(attribute='_sub_school_id', description='subject_id der Hausaufgabe')
 })
 
 def allowed_file(filename):
@@ -84,12 +83,6 @@ class FileUpload(Resource):
             resp.status_code = 400
             return resp
 
-@homeworkio.route('/helloworld')
-@homeworkio.response(200, 'Alles ok.')
-class HelloWorld(Resource):
-    def get(self):
-        return {'hello': 'world'}, 200
-
 @homeworkio.route('/students')
 @homeworkio.response(500, 'Serverseitiger Fehler')
 class StudentListOperations(Resource):
@@ -97,13 +90,11 @@ class StudentListOperations(Resource):
     def get(self):
         adm = HomeworkIOAdministration()
         students = adm.get_all_students()
-        # Wenn leer, wird eine leere Liste zurückgegeben
         return students
 
     @homeworkio.marshal_with(student, code=200)
     @homeworkio.expect(student)
     def post(self):
-        """Anlegen eines neuen Studenten."""
         adm = HomeworkIOAdministration()
         try:
             first_name = api.payload["first_name"]
@@ -141,7 +132,6 @@ class TeacherListOperations(Resource):
     @homeworkio.marshal_with(teacher, code=200)
     @homeworkio.expect(teacher)
     def post(self):
-        """Anlegen eines neuen Studenten."""
         adm = HomeworkIOAdministration()
         try:
             first_name = api.payload["first_name"]
@@ -173,13 +163,11 @@ class School_ClassListOperations(Resource):
     def get(self):
         adm = HomeworkIOAdministration()
         school_classes = adm.get_all_school_classes()
-        # Wenn leer, wird eine leere Liste zurückgegeben
         return school_classes
 
     @homeworkio.marshal_with(school_class, code=200)
     @homeworkio.expect(school_class)
     def post(self):
-        """Anlegen eines neuen Studenten."""
         adm = HomeworkIOAdministration()
         try:
             name = api.payload["name"]
@@ -210,13 +198,11 @@ class SchoolListOperations(Resource):
     def get(self):
         adm = HomeworkIOAdministration()
         schools = adm.get_all_schools()
-        # Wenn leer, wird eine leere Liste zurückgegeben
         return schools
 
     @homeworkio.marshal_with(school, code=200)
     @homeworkio.expect(school)
     def post(self):
-        """Anlegen eines neuen Studenten."""
         adm = HomeworkIOAdministration()
         try:
             name = api.payload["name"]
@@ -248,13 +234,11 @@ class SubjectListOperations(Resource):
     def get(self):
         adm = HomeworkIOAdministration()
         subjects = adm.get_all_subjects()
-        # Wenn leer, wird eine leere Liste zurückgegeben
         return subjects
 
     @homeworkio.marshal_with(subject, code=200)
     @homeworkio.expect(subject)
     def post(self):
-        """Anlegen eines neuen Studenten."""
         adm = HomeworkIOAdministration()
         try:
             name = api.payload["name"]
@@ -285,7 +269,6 @@ class HomeworkListOperations(Resource):
     def get(self):
         adm = HomeworkIOAdministration()
         homeworks = adm.get_all_homeworks()
-        # Wenn leer, wird eine leere Liste zurückgegeben
         return homeworks
 
     @homeworkio.marshal_with(homework, code=200)
@@ -298,8 +281,9 @@ class HomeworkListOperations(Resource):
             start_event = api.payload["start_event"]
             end_event = api.payload["end_event"]
             subject_id = api.payload["subject_id"]
+            teacher_id = api.payload["teacher_id"]
             school_class_id = api.payload["school_class_id"]
-            return adm.create_homework(description, file_path, start_event, end_event, school_class_id, subject_id), 200
+            return adm.create_homework(description, file_path, start_event, end_event, school_class_id, subject_id, teacher_id), 200
         except KeyError:
             return "KeyError", 500
 

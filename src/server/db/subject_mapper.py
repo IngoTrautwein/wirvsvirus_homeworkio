@@ -14,9 +14,7 @@ class SubjectMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, name) in tuples:
-            subject = Subject()
-            subject.set_id(id)
-            subject.set_name(name)
+            subject = self.__create_subject(id, name)
             result.append(subject)
 
         self._cnx.commit()
@@ -32,9 +30,7 @@ class SubjectMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            subject = Subject()
-            subject.set_id(id)
-            subject.set_name(name)
+            subject = self.__create_subject(id, name)
             result.append(subject)
 
         self._cnx.commit()
@@ -52,9 +48,7 @@ class SubjectMapper(Mapper):
 
         try:
             (id, name) = tuples[0]
-            subject = Subject()
-            subject.set_id(id)
-            subject.set_name(name)
+            subject = self.__create_subject(id, name)
             result = subject
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
@@ -116,6 +110,11 @@ class SubjectMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+    def __create_subject(self, id, name):
+        subject = Subject()
+        subject.set_id(id)
+        subject.set_name(name)
+        return subject
 
 if __name__ == "__main__":
     with SubjectMapper() as mapper:
