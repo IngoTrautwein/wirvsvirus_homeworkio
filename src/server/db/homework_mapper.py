@@ -64,6 +64,22 @@ class HomeworkMapper(Mapper):
 
         return result
 
+    def find_homework_keys_by_school_class(self, key):
+        result = []
+
+        cursor = self._cnx.cursor()
+        command = "SELECT id FROM subject_school_class WHERE school_class_id={}".format(key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id) in tuples:
+            result.append(id[0])
+
+        self._cnx.commit()
+        cursor.close()
+
+        return result
+
     def insert(self, homework):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM homework ")

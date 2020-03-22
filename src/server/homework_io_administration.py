@@ -217,6 +217,17 @@ class HomeworkIOAdministration:
         with HomeworkMapper() as mapper:
             return mapper.find_by_key(id)
 
+    def get_homeworks_of_student_by_school_class(self, student):
+        school_class = self.get_school_class_of_student(student)
+        result = []
+        with HomeworkMapper() as mapper:
+            homeworks_id = mapper.find_homework_keys_by_school_class(school_class.get_id())
+            for homework_id in homeworks_id:
+                homework = mapper.find_by_key(homework_id)
+                if homework is not None:
+                    result.append(homework)
+            return result
+
     def get_school_of_student(self, student):
         with HomeworkMapper() as mapper:
             # keine Prüfung vorhanden

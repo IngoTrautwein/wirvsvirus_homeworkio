@@ -306,6 +306,32 @@ class HomeworkOperations(Resource):
         adm.delete_homework(homework)
         return '', 200
 
+@homeworkio.route('/students/<int:id>/homework')
+@homeworkio.response(500, 'Serverseitiger Fehler')
+@homeworkio.param('id', 'ID des Studenten')
+class HomeworkListOperations(Resource):
+    @homeworkio.marshal_list_with(homework)
+    def get(self, id):
+        adm = HomeworkIOAdministration()
+        student = adm.get_student_by_id(id)
+        homeworks = adm.get_homeworks_of_student_by_school_class(student)
+        return homeworks
+
+    @homeworkio.marshal_with(homework, code=200)
+    @homeworkio.expect(homework)
+    def post(self):
+        adm = HomeworkIOAdministration()
+        try:
+            description = api.payload["description"]
+            file_path = api.payload["file_path"]
+            start_event = api.payload["start_event"]
+            end_event = api.payload["end_event"]
+            subject_id = api.payload["subject_id"]
+            teacher_id = api.payload["teacher_id"]
+            school_class_id = api.payload["school_class_id"]
+            return adm.create_homework(description, file_path, start_event, end_event, school_class_id, subject_id, teacher_id), 200
+        except KeyError:
+            return "KeyError", 500
 
 if __name__ == '__main__':
     app.run(debug=True)
