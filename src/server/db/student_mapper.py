@@ -14,10 +14,7 @@ class StudentMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
+            student = self.__create_student(id, first_name, surname)
             result.append(student)
 
         self._cnx.commit()
@@ -33,10 +30,7 @@ class StudentMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
+            student = self.__create_student(id, first_name, surname)
             result.append(student)
 
         self._cnx.commit()
@@ -52,10 +46,7 @@ class StudentMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
+            student = self.__create_student(id, first_name, surname)
             result.append(student)
 
         self._cnx.commit()
@@ -71,10 +62,7 @@ class StudentMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
+            student = self.__create_student(id, first_name, surname)
             result.append(student)
 
         self._cnx.commit()
@@ -92,10 +80,7 @@ class StudentMapper(Mapper):
 
         try:
             (id, first_name, surname) = tuples[0]
-            student = Student()
-            student.set_id(id)
-            student.set_first_name(first_name)
-            student.set_surname(surname)
+            student = self.__create_student(id, first_name, surname)
             result = student
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
@@ -142,6 +127,12 @@ class StudentMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+    def __create_student(self, id, first_name, surname):
+        student = Student()
+        student.set_id(id)
+        student.set_first_name(first_name)
+        student.set_surname(surname)
+        return student
 
 if __name__ == "__main__":
     with StudentMapper() as mapper:

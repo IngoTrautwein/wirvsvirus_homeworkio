@@ -14,10 +14,7 @@ class SchoolMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, name, address) in tuples:
-            school = School()
-            school.set_id(id)
-            school.set_name(name)
-            school.set_address(address)
+            school = self.__create_school(id, name, address)
             result.append(school)
 
         self._cnx.commit()
@@ -33,10 +30,7 @@ class SchoolMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, name, address) in tuples:
-            school = School()
-            school.set_id(id)
-            school.set_name(name)
-            school.set_address(address)
+            school = self.__create_school(id, name, address)
             result.append(school)
 
         self._cnx.commit()
@@ -54,13 +48,8 @@ class SchoolMapper(Mapper):
 
         try:
             (id, name, address) = tuples[0]
-            school = School()
-            school.set_id(id)
-            school.set_name(name)
-            school.set_address(address)
+            school = self.__create_school(id, name, address)
             result = school
-
-
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
             result = None
@@ -116,9 +105,7 @@ class SchoolMapper(Mapper):
 
         try:
             (id, name, address) = tuples[0]
-            school = School()
-            school.set_id(id)
-            school.set_name(name)
+            school = self.__create_school(id, name, address)
             result = school
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
@@ -129,6 +116,12 @@ class SchoolMapper(Mapper):
 
         return result
 
+    def __create_school(self, id, name, address):
+        school = School()
+        school.set_id(id)
+        school.set_name(name)
+        school.set_address(address)
+        return school
 
 if __name__ == "__main__":
     with SchoolMapper() as mapper:
