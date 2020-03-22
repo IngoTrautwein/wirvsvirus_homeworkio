@@ -46,12 +46,11 @@ subject = api.inherit('Subject', bo, {
 })
 
 homework = api.inherit('Homework', bo, {
-    'name': fields.String(attribute='_name', description='Name der Hausaufgabe'),
     'file_path': fields.String(attribute='_file_path', description='Dateipfad der Hausaufgabe'),
     'description': fields.String(attribute='_description', description='Beschreibung der Hausaufgabe'),
     'start_event': fields.DateTime(attribute='_start_event', description='Start_Event der Hausaufgabe'),
     'end_event': fields.DateTime(attribute='_end_event', description='End_Event der Hausaufgabe'),
-    'sub_school_id': fields.Integer(attribute='_name', description='subject_id der Hausaufgabe')
+    'sub_school_id': fields.Integer(attribute='_sub_school_id', description='subject_id der Hausaufgabe')
 })
 
 def allowed_file(filename):
@@ -270,7 +269,6 @@ class HomeworkListOperations(Resource):
     def get(self):
         adm = HomeworkIOAdministration()
         homeworks = adm.get_all_homeworks()
-        # Wenn leer, wird eine leere Liste zurückgegeben
         return homeworks
 
     @homeworkio.marshal_with(homework, code=200)

@@ -191,7 +191,7 @@ class HomeworkIOAdministration:
     """
     Homework-spezifische Methoden
     """
-    def create_homework(self,  description, file_path, start_event, end_event, school_class_id, subject_id, teacher_id):
+    def create_homework(self, description, file_path, start_event, end_event, school_class_id, subject_id, teacher_id):
         homework = Homework()
         homework.set_description(description)
         homework.set_file_path(file_path)
