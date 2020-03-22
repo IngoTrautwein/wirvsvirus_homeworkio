@@ -14,10 +14,7 @@ class TeacherMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            teacher = Teacher()
-            teacher.set_id(id)
-            teacher.set_first_name(first_name)
-            teacher.set_surname(surname)
+            teacher = self.__create_teacher(id, first_name, surname)
             result.append(teacher)
 
         self._cnx.commit()
@@ -33,10 +30,7 @@ class TeacherMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            teacher = Teacher()
-            teacher.set_id(id)
-            teacher.set_first_name(first_name)
-            teacher.set_surname(surname)
+            teacher = self.__create_teacher(id, first_name, surname)
             result.append(teacher)
 
         self._cnx.commit()
@@ -54,10 +48,7 @@ class TeacherMapper(Mapper):
 
         try:
             (id, first_name, surname) = tuples[0]
-            teacher = Teacher()
-            teacher.set_id(id)
-            teacher.set_first_name(first_name)
-            teacher.set_surname(surname)
+            teacher = self.__create_teacher(id, first_name, surname)
             result = teacher
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
@@ -109,10 +100,7 @@ class TeacherMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, first_name, surname) in tuples:
-            teacher = Teacher()
-            teacher.set_id(id)
-            teacher.set_first_name(first_name)
-            teacher.set_surname(surname)
+            teacher = self.__create_teacher(id, first_name, surname)
             result.append(teacher)
 
         self._cnx.commit()
@@ -156,6 +144,12 @@ class TeacherMapper(Mapper):
         self._cnx.commit()
         cursor.close()
 
+    def __create_teacher(self, id, first_name, surname):
+        teacher = Teacher()
+        teacher.set_id(id)
+        teacher.set_first_name(first_name)
+        teacher.set_surname(surname)
+        return teacher
 
 if __name__ == "__main__":
     with TeacherMapper() as mapper:

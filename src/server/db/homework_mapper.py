@@ -14,13 +14,7 @@ class HomeworkMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, description, file_path, start_event, end_event, subject_school_class_id) in tuples:
-            homework = Homework()
-            homework.set_id(id)
-            homework.set_description(description)
-            homework.set_file_path(file_path)
-            homework.set_start_event(start_event)
-            homework.set_end_event(end_event)
-            homework.set_sub_school_id(subject_school_class_id)
+            homework = self.__create_homework(id, description, file_path, start_event, end_event, subject_school_class_id)
             result.append(homework)
 
         self._cnx.commit()
@@ -38,13 +32,7 @@ class HomeworkMapper(Mapper):
 
         try:
             (id, description, file_path, start_event, end_event, subject_school_class_id) = tuples[0]
-            homework = Homework()
-            homework.set_id(id)
-            homework.set_description(description)
-            homework.set_file_path(file_path)
-            homework.set_start_event(start_event)
-            homework.set_end_event(end_event)
-            homework.set_sub_school_id(subject_school_class_id)
+            homework = self.__create_homework(id, description, file_path, start_event, end_event, subject_school_class_id)
             result = homework
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
@@ -65,13 +53,7 @@ class HomeworkMapper(Mapper):
 
         try:
             (id, description, file_path, start_event, end_event, subject_school_class_id) = tuples[0]
-            homework = Homework()
-            homework.set_id(id)
-            homework.set_description(description)
-            homework.set_file_path(file_path)
-            homework.set_start_event(start_event)
-            homework.set_end_event(end_event)
-            homework.set_sub_school_id(subject_school_class_id)
+            homework = self.__create_homework(id, description, file_path, start_event, end_event, subject_school_class_id)
             result = homework
         except IndexError:
             """tritt auf, wenn kein Tupel zurückgeliefert wurde"""
@@ -133,6 +115,16 @@ class HomeworkMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
+
+    def __create_homework(self, id, description, file_path, start_event, end_event, subject_school_class_id):
+        homework = Homework()
+        homework.set_id(id)
+        homework.set_description(description)
+        homework.set_file_path(file_path)
+        homework.set_start_event(start_event)
+        homework.set_end_event(end_event)
+        homework.set_sub_school_id(subject_school_class_id)
+        return homework
 
 
 if __name__ == "__main__":
