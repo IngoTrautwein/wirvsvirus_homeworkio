@@ -5,9 +5,11 @@ from flask_restx import Api, Resource, fields
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
+from logger import Logger
 from server.homework_io_administration import HomeworkIOAdministration
 from definitions import UPLOAD_FOLDER_PATH
 
+LOGGER = Logger('Rest_Service_Log')
 app = Flask(__name__)
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER_PATH
@@ -88,7 +90,7 @@ class FileUpload(Resource):
 class StudentListOperations(Resource):
     @homeworkio.marshal_list_with(student)
     def get(self):
-
+        LOGGER.log_info("Test")
         adm = HomeworkIOAdministration()
         students = adm.get_all_students()
         return students
