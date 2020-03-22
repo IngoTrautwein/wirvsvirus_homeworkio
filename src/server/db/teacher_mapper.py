@@ -13,7 +13,7 @@ class TeacherMapper(Mapper):
         cursor.execute("SELECT * from teacher")
         tuples = cursor.fetchall()
 
-        for (id, first_name, surname) in tuples:
+        for (id, first_name, surname, school_id) in tuples:
             teacher = self.__create_teacher(id, first_name, surname)
             result.append(teacher)
 
@@ -29,7 +29,7 @@ class TeacherMapper(Mapper):
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, surname) in tuples:
+        for (id, first_name, surname, school_id) in tuples:
             teacher = self.__create_teacher(id, first_name, surname)
             result.append(teacher)
 
@@ -99,7 +99,7 @@ class TeacherMapper(Mapper):
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, surname) in tuples:
+        for (id, first_name, surname, school_id) in tuples:
             teacher = self.__create_teacher(id, first_name, surname)
             result.append(teacher)
 
@@ -116,8 +116,8 @@ class TeacherMapper(Mapper):
         for (maxid) in tuples:
             teacher.set_id(maxid[0]+1)
 
-        command = "INSERT INTO teacher (id, first_name, surname) VALUES (%s,%s,%s)"
-        data = (teacher.get_id(), teacher.get_first_name(), teacher.get_surname())
+        command = "INSERT INTO teacher (id, first_name, surname, school_id) VALUES (%s,%s,%s,%s)"
+        data = (teacher.get_id(), teacher.get_first_name(), teacher.get_surname(), 0)
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -150,6 +150,7 @@ class TeacherMapper(Mapper):
         teacher.set_first_name(first_name)
         teacher.set_surname(surname)
         return teacher
+
 
 if __name__ == "__main__":
     with TeacherMapper() as mapper:

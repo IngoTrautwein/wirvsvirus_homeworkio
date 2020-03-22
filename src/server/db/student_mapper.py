@@ -79,7 +79,7 @@ class StudentMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, first_name, surname, school_id) = tuples[0]
+            (id, first_name, surname) = tuples[0]
             student = self.__create_student(id, first_name, surname)
             result = student
         except IndexError:
