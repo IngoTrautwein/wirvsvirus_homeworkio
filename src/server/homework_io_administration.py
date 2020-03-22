@@ -1,3 +1,4 @@
+from logger import Logger
 from .bo.homework import Homework
 from .bo.school import School
 from .bo.school_class import SchoolClass
@@ -12,6 +13,7 @@ from .db.teacher_mapper import TeacherMapper
 from .db.school_class_mapper import SchoolClassMapper
 from .db.school_mapper import SchoolMapper
 
+LOGGER = Logger('Rest_Service_Log')
 
 class HomeworkIOAdministration:
 
@@ -115,6 +117,7 @@ class HomeworkIOAdministration:
 
     def delete_teacher(self, teacher):
         with TeacherMapper() as mapper:
+            LOGGER.log_warning("Kann zu Fehlern führen, wenn Fremdschlüssel vorliegen. Diese werden bisher nicht behandelt!")
             mapper.delete(teacher)
 
     """

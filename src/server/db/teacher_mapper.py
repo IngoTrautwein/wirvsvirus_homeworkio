@@ -47,7 +47,7 @@ class TeacherMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, first_name, surname, school_id) = tuples[0]
+            (id, first_name, surname) = tuples[0]
             teacher = self.__create_teacher(id, first_name, surname)
             result = teacher
         except IndexError:
