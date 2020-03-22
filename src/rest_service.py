@@ -88,6 +88,7 @@ class FileUpload(Resource):
 class StudentListOperations(Resource):
     @homeworkio.marshal_list_with(student)
     def get(self):
+
         adm = HomeworkIOAdministration()
         students = adm.get_all_students()
         return students

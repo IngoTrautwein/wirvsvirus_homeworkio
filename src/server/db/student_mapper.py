@@ -13,7 +13,7 @@ class StudentMapper(Mapper):
         cursor.execute("SELECT * from student")
         tuples = cursor.fetchall()
 
-        for (id, first_name, surname) in tuples:
+        for (id, first_name, surname, school_id) in tuples:
             student = self.__create_student(id, first_name, surname)
             result.append(student)
 
@@ -45,7 +45,7 @@ class StudentMapper(Mapper):
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, surname) in tuples:
+        for (id, first_name, surname, school_id) in tuples:
             student = self.__create_student(id, first_name, surname)
             result.append(student)
 
@@ -61,7 +61,7 @@ class StudentMapper(Mapper):
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, first_name, surname) in tuples:
+        for (id, first_name, surname, school_id) in tuples:
             student = self.__create_student(id, first_name, surname)
             result.append(student)
 
@@ -79,7 +79,7 @@ class StudentMapper(Mapper):
         tuples = cursor.fetchall()
 
         try:
-            (id, first_name, surname) = tuples[0]
+            (id, first_name, surname, school_id) = tuples[0]
             student = self.__create_student(id, first_name, surname)
             result = student
         except IndexError:
@@ -99,8 +99,9 @@ class StudentMapper(Mapper):
         for (maxid) in tuples:
             student.set_id(maxid[0]+1)
 
-        command = "INSERT INTO student (id, first_name, surname) VALUES (%s,%s,%s)"
-        data = (student.get_id(), student.get_first_name(), student.get_surname())
+        command = "INSERT INTO student (id, first_name, surname, school_id) VALUES (%s,%s,%s,%s)"
+        # School_ID ist aktuell immer 0, daher hier statisch gecodet
+        data = (student.get_id(), student.get_first_name(), student.get_surname(), 0)
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -133,6 +134,7 @@ class StudentMapper(Mapper):
         student.set_first_name(first_name)
         student.set_surname(surname)
         return student
+
 
 if __name__ == "__main__":
     with StudentMapper() as mapper:
