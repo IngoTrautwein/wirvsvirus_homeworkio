@@ -283,8 +283,9 @@ class HomeworkListOperations(Resource):
             start_event = api.payload["start_event"]
             end_event = api.payload["end_event"]
             subject_id = api.payload["subject_id"]
+            teacher_id = api.payload["teacher_id"]
             school_class_id = api.payload["school_class_id"]
-            return adm.create_homework(description, file_path, start_event, end_event, school_class_id, subject_id), 200
+            return adm.create_homework(description, file_path, start_event, end_event, school_class_id, subject_id, teacher_id), 200
         except KeyError:
             return "KeyError", 500
 

@@ -191,7 +191,7 @@ class HomeworkIOAdministration:
     """
     Homework-spezifische Methoden
     """
-    def create_homework(self,  description, file_path, start_event, end_event, school_class_id, subject_id):
+    def create_homework(self,  description, file_path, start_event, end_event, school_class_id, subject_id, teacher_id):
         homework = Homework()
         homework.set_description(description)
         homework.set_file_path(file_path)
@@ -200,7 +200,7 @@ class HomeworkIOAdministration:
         homework.set_id(1)
 
         with HomeworkMapper() as mapper:
-            sub_school_id = mapper.insert_subject_school_class(school_class_id, subject_id)
+            sub_school_id = mapper.insert_subject_school_class(school_class_id, subject_id, teacher_id)
             homework.set_sub_school_id(sub_school_id)
             homework = mapper.insert(homework)
 

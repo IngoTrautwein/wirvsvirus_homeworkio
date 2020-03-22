@@ -81,15 +81,15 @@ class HomeworkMapper(Mapper):
 
         return homework
 
-    def insert_subject_school_class(self, school_class_id, subject_id):
+    def insert_subject_school_class(self, school_class_id, subject_id, teacher_id):
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM subject_school_class ")
         tuples = cursor.fetchall()
         for (maxid) in tuples:
             id = maxid[0]+1
 
-        command = "INSERT INTO subject_school_class (id, school_class_id, subject_id) VALUES (%s,%s,%s)"
-        data = (id, school_class_id, subject_id)
+        command = "INSERT INTO subject_school_class (id, school_class_id, subject_id, teacher_id) VALUES (%s,%s,%s,%s)"
+        data = (id, school_class_id, subject_id, teacher_id)
         cursor.execute(command, data)
 
         self._cnx.commit()
