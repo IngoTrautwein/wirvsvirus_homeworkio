@@ -2,6 +2,10 @@
 
 Im Kontext des Hackathons [wirvsvirus](https://www.bundesregierung.de/breg-de/themen/coronavirus/wir-vs-virus-1731968) stellt dieses Repository die Code-Basis für die Challange "E-Learning. Wie können wir Weiterbildungsmöglichkeiten/Online-Learning anbieten im spez. Hausaufgabenverwaltung". Hier das dazugehörige [Devpost](https://devpost.com/software/019_e-learning_homework-io)
 
+## Hinweis
+
+Der entwickelte Code enthält noch einige Fehler, daher kann keine Fehlerfreie Verwendung garantiert werden.
+
 ## Inhalt
 
 Dieses Repository enthält den Quellcode für das Backend sowie das Datenbankschema.
